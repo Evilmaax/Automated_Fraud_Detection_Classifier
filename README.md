@@ -15,7 +15,7 @@ The following topics will be covered here:
 * Balanced Bagging Classifier
 * Recall value
 * Dataset
-* Tests
+* Usage and tests
 * Next steps
 
 ### Extreme Gradient Boosting algorithm
@@ -52,15 +52,15 @@ For example: If we use a dataset with 70 thousand records and define CV value be
 
 [gif source](https://stackoverflow.com/questions/31947183/how-to-implement-walk-forward-testing-in-sklearn)
  
-## Balanced Bagging Classifier
+### Balanced Bagging Classifier
 
 Part of the <i>Imbalanced Learn</i> library (a branch of Scikit Learn) this tool aims to diminish the damage of highly unbalanced classes. Using it, it is possible to create records for classes with undersampling, remove records in classes with oversampling and perform resampling, a technique in which the small amount of data available from an unbalanced class is used to estimate a population parameter.
 
-## Recall value
+### Recall value
 
 To mesure how correct it is the classifciation recall metric is used. With it we know the percentage of values belonging to a given class that were identified among all the possibilities of the dataset. Recall is, usually, used when it seeks to reduce false negatives.
 
-## Dataset
+### Dataset
 
 For training and results validation was used a public dataset, with real data collected from the digital payment platform Vesta, which was made 
 
@@ -68,7 +68,7 @@ For training and results validation was used a public dataset, with real data co
 
 The dataset contains more than 590,000 credit card purchase and sale records labeled as fraudulent or non-fraudulent. The file is composed of 394 columns.
 
-## Tests
+### Usage and tests
 
 To run this tool, any IDE that supports projects developed in Python language or even the Windows command terminal can be used. Regardless of the option chosen, it is necessary to have Python installed on the machine. The application was not yet designed for use on operating systems based on Linux, Mac OS or any others.
 
@@ -88,18 +88,23 @@ The second file created upon completion of the preprocessing step is columns.TXT
 
 3 - With the preprocessing done the training can be made. The user has the option to train using the default values or use another menus option to automatically search for the optimized values.
 
-4 - The last step is classify the unseen records with the generated model. The result will be saved as .CSV to the Dataset folder.
+4 - The last step is to classify the unseen records with the generated model. The result will be saved as .CSV to the Dataset folder.
 
 In this test the tool achieved a recall of 0.87.
 
 
 ![Test results](https://i.ibb.co/0JcqvBg/fdvdv.jpg)
 
-*******************************************************
-                        IMPORTANT
-                        
-Fill in the configuration files in the applications root folder before the first use
-for the correct functioning of the application
+### Next steps
+
+If you want to contribute to this project, your efferts are very welcome. This is a list of some open points:
+
+* Diminish processing time for some steps, like Grid Search optimization. The way to do this could be distributed computing, for example, or any other else;
+* Portability to Mac and Linux family OSs;
+* Validation to different datasets to search for punctual issues;
+* Any contribution and new ideas are appreciated;
+
+
 *******************************************************
 
 
