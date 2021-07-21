@@ -15,9 +15,12 @@ The following topics will be covered here:
 
 ## Extreme Gradient Boosting algorithm
 
-This tool uses the Extreme Gradient Boosting (XGB) algorithm in its construction.<br>
+This tool uses the Extreme Gradient Boosting (XGB) algorithm in its construction.
+
 As a boosting algorithm, XGB implements several simpler algorithms in order to achieve a more complete and accurate classification result at the end.<br>
-In practice, algorithms of this type work as sequential decision trees since the value that was predicted at <i> n </i> will be taken into account for the prediction at <i> n +1</i> wwhere at every new tree the algorithm will give bigger weight to wrong predictions and smaller for the correct ones. This way with a new set of random columns and values XGB tends to learn how to deal with the peculiarities of the WRONG classification from the previous round.
+In practice, algorithms of this type work as sequential decision trees since the value that was predicted at <i> n </i> will be taken into account for the prediction at <i> n +1</i> where at every new tree the algorithm will give bigger weight to wrong predictions and smaller for the correct ones. 
+
+This way with a new set of random columns and values XGB tends to learn how to deal with the peculiarities of the WRONG classification from the previous round.
 
 ## Some paramenters used in this tool
 
