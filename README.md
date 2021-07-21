@@ -28,13 +28,13 @@ This way with a new set of random columns and values XGB tends to learn how to d
 One of the highlights of the XGB is precisely the fact that it has dozens of configurable parameters.<br>
 These are the main ones used by this tool:
 
-<i>Eta</i>: Represents the learning rate, called eta in the official XGB documentation.<br>
-<i>N_estimators</i>: Refers to the number of decision trees that will be created by the model during training.<br>
-<i>Min_child_weight</i>: Defines the minimum sum of weights necessary for the tree to continue to be partitioned. The higher this value, the more conservative the algorithm will be and the less superspecific relationships will be learned.<br>
-<i>Max_depth</i>: Represents the maximum depth of the tree. Like the previous parameter, it has the same control relationship with overfitting. However, in this case, the higher the more likely it is to overfit.<br>
-<i>Subsample</i>: Determines the portion of random training data that will be passed to each tree before they increase by another level.\n'
-<i>Colsample_bytree</i>: Similar to the above, determines the portion of columns that will be given randomly when the trees are created.\n'
-<i>Scale_pos_weight</i>: Controls the balance between positive and negative weights. It is recommended for cases with a great imbalance between classes.
+*<i>Eta</i>: Represents the learning rate, called eta in the official XGB documentation.<br>
+*<i>N_estimators</i>: Refers to the number of decision trees that will be created by the model during training.<br>
+*<i>Min_child_weight</i>: Defines the minimum sum of weights necessary for the tree to continue to be partitioned. The higher this value, the more conservative the algorithm will be and the less superspecific relationships will be learned.<br>
+*<i>Max_depth</i>: Represents the maximum depth of the tree. Like the previous parameter, it has the same control relationship with overfitting. However, in this case, the higher the more likely it is to overfit.<br>
+*<i>Subsample</i>: Determines the portion of random training data that will be passed to each tree before they increase by another level.\n'
+*<i>Colsample_bytree</i>: Similar to the above, determines the portion of columns that will be given randomly when the trees are created.\n'
+*<i>Scale_pos_weight</i>: Controls the balance between positive and negative weights. It is recommended for cases with a great imbalance between classes.
 
 ## Extreme Gradient Boosting algorithm
 
