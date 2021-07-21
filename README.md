@@ -87,7 +87,7 @@ In the tests presented here, a machine equipped with a 4-core Intel Core i7-4720
 
 In this process, the mentioned dataset before was used. In this stage, the dataset was divided into 2 files: training.CSV, containing about 550 thousand transactions, and classification.CSV, with approximately 40 thousand transactions unseen to the model to generate a totally exempt rating. It is noteworthy that the cuts maintained similar false transaction rates, with 3.51% and 3.43%, respectively.
 
-The following steps were performed (for a more detailed explanation, please refer to the file "xxxxxxx" in above - in portuguese):
+The following steps were performed (for a more detailed explanation, please refer to the file **TCII - Maximiliano Meyer.pdf above** - in portuguese):
 
 1 - The initial action to be taken is setting up the environment for the initial run. For this, the user must edit the config.txt file, adding the label of the fraud column and the columns to be ignored in the correlation analysis stage. Should be added the training .CSV file in the Dataset folder. After performing these steps it is now possible to start the program
 
