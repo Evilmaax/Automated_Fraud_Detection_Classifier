@@ -12,5 +12,4 @@ Its use is free as long as the source is informed.
 For updates, clone or contribute to the project -> https://github.com/Evilmaax
 
 Contact -> MaximilianoMeyer48@gmail.com
-
-Version 0.1
+<br>Version 0.1
