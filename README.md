@@ -62,15 +62,33 @@ To mesure how correct it is the classifciation recall metric is used. With it we
 
 ## Dataset
 
-For training and results validation was used a public dataset, with real data collected from the digital payment platform Vesta, which was made [available in Kaggle] (https://www.kaggle.com/c/ieee-fraud-detection/data). The dataset contains more than 590,000 credit card purchase and sale records labeled as fraudulent or non-fraudulent. The file is composed of 394 columns.
+For training and results validation was used a public dataset, with real data collected from the digital payment platform Vesta, which was made 
+
+[available in Kaggle] (https://www.kaggle.com/c/ieee-fraud-detection/data).
+
+The dataset contains more than 590,000 credit card purchase and sale records labeled as fraudulent or non-fraudulent. The file is composed of 394 columns.
 
 ## Tests
 
 To run this tool, any IDE that supports projects developed in Python language or even the Windows command terminal can be used. Regardless of the option chosen, it is necessary to have Python installed on the machine. The application was not yet designed for use on operating systems based on Linux, Mac OS or any others.
 
-In the tests presented in this chapter, a machine equipped with a 4-core Intel Core i7-4720HQ processor and support for up to 8 threads, Nvidia GeForce GTX 960M graphics card with 2 GB of dedicated memory, 8 GB of RAM memory and SSD installed was used. The operating system is Windows 10 and the development environment is Pycharm.
-In this process, the same dataset manipulated throughout the research was used, which, for this hypothetical scenario, was divided into 2 files: training.CSV, containing about 550 thousand transactions and classificacao.CSV, with approximately 40 thousand unpublished transactions to the model in order to generate a totally exempt rating. It is noteworthy that the cuts maintained similar false transaction rates, with 3.51% and 3.43%, respectively.
-Initially, both files have the same column structure, as if they had been extracted from the institution's database through the same ETL process, as it is imagined to occur in the daily lives of these corporations.
+In the tests presented here, a machine equipped with a 4-core Intel Core i7-4720HQ processor and support for up to 8 threads, Nvidia GeForce GTX 960M graphics card with 2 GB of dedicated memory, 8 GB of RAM memory and SSD installed was used. The operating system is Windows 10 and the development environment is Pycharm.
+
+In this process, the mentioned dataset before was used. In this stage, dataset was divided into 2 files: training.CSV, containing about 550 thousand transactions and classification.CSV, with approximately 40 thousand transactions unseen to the model in order to generate a totally exempt rating. It is noteworthy that the cuts maintained similar false transaction rates, with 3.51% and 3.43%, respectively.
+
+The folowwing steps were performed (for a more detailed explanation, please refer to the file "xxxxxxx" in above - in portuguese):
+
+1 - The initial action to be taken is setting up the environment for the initial run. For this, the user must edit the config.txt file, adding the label of the fraud column and the columns to be ignored in the correlation analysis stage. Should be added the training .CSV file in the Dataset folder. After performing these steps it is now possible to start the program
+
+2 - The first step to be taken when working with a new dataset is to apply preprocessing to the data via option 1 on the menu. The program then asks, standard task, which file will be used in the chosen step. As there is only 1 file in the folder, just inform the number that identifies it and the process starts running.
+
+Two files will be exported at the end of the execution of this pipeline. The first one, called pre_processing_done.csv is the result of the input dataset after going through the initial data processing and having the correlated and non-numeric columns removed and the NaN values <i>NaN</i> filled. This file will be exported to the Dataset folder and will be used in all future training and optimization steps.
+
+The second file created upon completion of the preprocessing step is columns.TXT, which will be used during the sorting process to ensure that the transactions to be sorted will have the same column settings as the template created. Without this standardization, it is impossible to use the model and the data to be classified together.
+
+3 - With the preprocessing done the training can be made. The user has the option to train using the default values or use another menus option to automatically search for the optimized values.
+
+4 - The last step is classify the unseen records with the generated model. The result will be saved as .CSV to the Dataset folder.
 
 
 *******************************************************
