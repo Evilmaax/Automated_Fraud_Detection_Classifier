@@ -93,7 +93,7 @@ The second file created upon completion of the preprocessing step is columns.TXT
 In this test the tool achieved a recall of 0.87.
 
 
-![Test results](https://ibb.co/HgV73NW)
+![Test results](https://i.ibb.co/0JcqvBg/fdvdv.jpg)
 
 *******************************************************
                         IMPORTANT
