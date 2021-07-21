@@ -7,7 +7,7 @@ in real-time using Machine Learning developed in the Computer Science course at 
 
 This research and project were developed in the first half of 2021 as a conclusion work of Computer Science course at the University of Santa Cruz do Sul - Unisc.
 
-Below you can see the tool in action, audio in portuguese only.
+Below you can see the tool in action in a video, audio in portuguese only.
 
 [![Video](https://img.youtube.com/vi/fnnyos9uOos/0.jpg)](https://www.youtube.com/watch?v=fnnyos9uOos)
 
