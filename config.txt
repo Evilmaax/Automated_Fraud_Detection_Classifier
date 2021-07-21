@@ -1,14 +1,14 @@
- # Insira o nome da coluna rotulada como fraude
- # Insira as colunas a serem ignoradas na análise de correlação separadas por vírgula.
-0.8 # Insira a taxa de correlação a ser considerada 
-0.1 # Insira a taxa de aprendizagem
-500 # Insira o número de árvores a serem criadas
-5 # Insira a taxa de min_child_weight
-0.8 # Insira a taxa de subsample
-0.7 # Insira a taxa de colsample_bytree
-5 # Insira a taxa de scale_pos_weight
-9 # Insira a taxa de max_depth
-0.2 # Insira taxa de divisão entre treinamento e teste. Ex: 0.2 para 80/20
+ # Insert the label column name
+ # Insert the column names to be ignored by correlation analysis. Must be separated by comma
+0.8 # Insert the correlation value 
+0.1 # Insert the learning rate value
+500 # Insert the number of decision trees to be created
+5 # Insert the min_child_weight value 
+0.8 # Insert the subsample value
+0.7 # Insert the colsample_bytree value
+5 # Insert the scale_pos_weight value
+9 # Insert the max_depth value
+0.2 # Insert the training/test split. Eg: 0.2 for 80/20
 
 ###########
-Não apague nenhuma das linhas acima. Se a informação de colunas correlacionadas não precisar ser inserida, por exemplo, apenas deixe em branco à esquerda do sinal de #
+Don't delete any of the above lines. If the information or correlated columns is irrelevant, leave blank to the left of the # sign
