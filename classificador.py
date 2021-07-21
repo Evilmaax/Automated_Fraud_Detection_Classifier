@@ -7,15 +7,15 @@ from imblearn.ensemble import BalancedBaggingClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV as CV
 from sklearn.metrics import plot_confusion_matrix, recall_score, matthews_corrcoef
 
-raiz_projeto = os.path.dirname(sys.argv[0])
+root_folder = os.path.dirname(sys.argv[0])
 
 try:
-    file = open(raiz_projeto + "/config.txt", "r")
+    file = open(root_folder + "/config.txt", "r")
     config = file.readlines()
 
-    rotulo = config[0].split(" #")[0]
+    label = config[0].split(" #")[0]
     to_keep = config[1].split(" #")[0].split(',')
-    tx_correlacao = float(config[2].split(" #")[0])
+    correlationRate = float(config[2].split(" #")[0])
     eta = float(config[3].split(" #")[0])
     n_estimators = int(config[4].split(" #")[0])
     min_child_weight = int(config[5].split(" #")[0])
@@ -28,40 +28,40 @@ try:
     file.close()
 
 except:
-    print("\nNão foi possível carregar o arquivo de configurações\nPor favor verifique")
+    print("\nConfig file cound not be loaded.\nPlease verify")
     sys.exit()
 
 
-def carregar():
+def loadFile():
     try:
-        arquivo = os.listdir(f"{raiz_projeto}/Dataset")
+        files = os.listdir(f"{root_folder}/Dataset")
 
-        print("\nQual arquivo você quer usar nesta operação?\n")
-        for i in range(len(arquivo)):
-            print(f"{i + 1} - {arquivo[i]}")
-        op = int(input("\nResposta: "))
+        print("\nWhich file do you want to use in this operation?\n")
+        for i in range(len(files)):
+            print(f"{i + 1} - {files[i]}")
+        op = int(input("\nAnswer: "))
 
-        print("\nCarregando dados.\nIsto pode demorar de acordo com o tamanho do arquivo")
-        data = pd.read_csv(raiz_projeto + '/Dataset/' + arquivo[op - 1])
-        print("\nArquivo " + arquivo[op - 1] + " carregado com sucesso")
+        print("\nLoading data.\nThis can take a while based on the size of the file")
+        data = pd.read_csv(root_folder + '/Dataset/' + files[op - 1])
+        print("\n" + files[op - 1] + " successfully loaded!")
 
         return data
 
     except:
-        print("\nNão foi possível carregar o arquivo\nPor favor verifique se o mesmo encontra-se na"
-              " pasta 'Dataset' dentro da raiz do projeto e se possui a extensão .CSV")
+        print("\nCould not load the file\nPlease verify if the folder 'Dataset' has something inside"
+              " and it is a file with .CSV extension")
         sys.exit()
 
 
-def otimizar():
-    data = carregar()
+def optimize():
+    data = loadFile()
 
-    cv = int(input("\nQuantos folds por rodada?"
-                   "\nMelhora significativa nos resultados a partir de 10 folds: "))
+    cv = int(input("\nHow many folds do you want to use?"
+                   "\nBetter solutions starts at 10 folds: "))
 
-    round, tempoTotal = 1, time.time()
+    round, totalTime = 1, time.time()
 
-    parametros = [['eta', 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
+    parameters = [['eta', 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
                   ['n_estimators', 300, 400, 500, 600, 700, 800],
                   ['min_child_weight', 3, 4, 5, 6, 7],
                   ['subsample', 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
@@ -70,91 +70,91 @@ def otimizar():
                   ['max_depth', 5, 6, 7, 8, 9, 10],
                   ['split', 0.2, 0.25, 0.3, 0.35]]
 
-    disponivel = []
+    available = []
 
-    for x in range(len(parametros)):
-        if len(parametros[x]) > 2:
-            disponivel.append(x)
+    for x in range(len(parameters)):
+        if len(parameters[x]) > 2:
+            available.append(x)
 
-    while len(disponivel) > 0:
+    while len(available) > 0:
         print("\nRound ", round)
         start = time.time()
-        nomes, param = [], []
+        paramName, paramValues = [], []
 
-        if len(disponivel) > 3:
-            temp = random.sample(disponivel, 3)  # escolhe 3 parametross random
+        if len(available) > 3:
+            temp = random.sample(available, 3)
         else:
-            temp = random.sample(disponivel, len(disponivel))  # ou quantos parametross ainda tiverem
+            temp = random.sample(available, len(available))
 
         for x in temp:
-            nomes.append(parametros[x][0])
-        for x in range(len(temp)):  # Popular 3 listas
-            listaTemp = []
-            if len(parametros[temp[x]]) > 3:
-                temp2 = random.sample(range(1, len(parametros[temp[x]])), 3)  # escolhe 3 valores random
+            paramName.append(parameters[x][0])
+        for x in range(len(temp)):
+            tempList = []
+            if len(parameters[temp[x]]) > 3:
+                temp2 = random.sample(range(1, len(parameters[temp[x]])), 3)
             else:
-                temp2 = random.sample(range(1, len(parametros[temp[x]])), len(parametros[temp[x]]) - 1)
+                temp2 = random.sample(range(1, len(parameters[temp[x]])), len(parameters[temp[x]]) - 1)
 
             for y in range(len(temp2)):
-                listaTemp.append(parametros[temp[x]][temp2[y]])
-            param.append(listaTemp)
+                tempList.append(parameters[temp[x]][temp2[y]])
+            paramValues.append(tempList)
 
-        param = dict(zip(nomes, param))
+        toBeTested = dict(zip(paramName, paramValues))
 
-        print("    Valores testados: ", param)
+        print("    Tested values: ", toBeTested)
         grid = CV(estimator=XGBClassifier(verbosity=0, use_label_encoder=False),
-                  param_grid=param,
+                  param_grid=toBeTested,
                   scoring='recall',
                   n_jobs=-1,
                   cv=cv)
 
-        grid.fit(data.drop([rotulo], axis='columns'), data[rotulo])
-        melhores = grid.best_params_
-        print("    Melhores parâmetros: ", melhores)
+        grid.fit(data.drop([label], axis='columns'), data[label])
+        bestScenario = grid.best_params_
+        print("    The best combination for tested values is: ", bestScenario)
 
-        for chave, valor in melhores.items():
-            for x in range(len(parametros)):
-                if parametros[x][0] == chave:
+        for key, value in bestScenario.items():
+            for x in range(len(parameters)):
+                if parameters[x][0] == key:
                     y = 0
-                    while y < len(parametros[x]):
-                        if (parametros[x][y] != valor) and (parametros[x][y] in param[chave]):
-                            parametros[x].pop(y)
+                    while y < len(parameters[x]):
+                        if (parameters[x][y] != value) and (parameters[x][y] in toBeTested[key]):
+                            parameters[x].pop(y)
                             y = 0
                         y += 1
 
         round += 1
-        print(f"    Tempo necessário para o round de treinamento: {time.time() - start:.3f} segundos")
+        print(f"    Elapsed time on this round: {time.time() - start:.3f} seconds")
 
-        disponivel = []
+        available = []
 
-        for x in range(len(parametros)):
-            if len(parametros[x]) > 2:
-                disponivel.append(x)
+        for x in range(len(parameters)):
+            if len(parameters[x]) > 2:
+                available.append(x)
 
-    print(f"\nTempo total: {time.time() - tempoTotal:.3f} segundos")
+    print(f"\nTotal time: {time.time() - totalTime:.3f} seconds")
 
-    with open("otimizado.txt", "w") as novaConfig:
-        for linha in parametros:
-            linha = " ".join(map(str, linha))
-            linha1, linha2 = linha.split(' ')
-            linha2 = linha2.strip() + " # " + linha1 + "\n"
-            novaConfig.write(linha2)
+    with open("optimized.txt", "w") as newConfig:
+        for line in parameters:
+            line = " ".join(map(str, line))
+            line1, line2 = line.split(' ')
+            line2 = line2.strip() + " # " + line1 + "\n"
+            newConfig.write(line2)
 
-    file = open(raiz_projeto + "/otimizado.txt", "r")
-    configOtimizada = file.readlines()
-    print("Arquivo otimizado.txt exportado para a pasta raiz da aplicação")
+    file = open(root_folder + "/optimized.txt", "r")
+    optimizedConfig = file.readlines()
+    print("File optimized.txt exported successfully to the root folder")
 
 
-    eta = float(configOtimizada[0].split(" #")[0])
-    n_estimators = int(configOtimizada[1].split(" #")[0])
-    min_child_weight = int(configOtimizada[2].split(" #")[0])
-    subsample = float(configOtimizada[3].split(" #")[0])
-    colsample_bytree = float(configOtimizada[4].split(" #")[0])
-    scale_pos_weight = int(configOtimizada[5].split(" #")[0])
-    max_depth = int(configOtimizada[6].split(" #")[0])
-    split = float(configOtimizada[7].split(" #")[0])
+    eta = float(optimizedConfig[0].split(" #")[0])
+    n_estimators = int(optimizedConfig[1].split(" #")[0])
+    min_child_weight = int(optimizedConfig[2].split(" #")[0])
+    subsample = float(optimizedConfig[3].split(" #")[0])
+    colsample_bytree = float(optimizedConfig[4].split(" #")[0])
+    scale_pos_weight = int(optimizedConfig[5].split(" #")[0])
+    max_depth = int(optimizedConfig[6].split(" #")[0])
+    split = float(optimizedConfig[7].split(" #")[0])
 
-    print("\nOtimização concluída. Valores selecionados:\n\n"
+    print("\nOptimization finished. Selected values:\n\n"
           f"Eta: {eta}\n"
           f"n_estimators: {n_estimators}\n"
           f"min_child_weight: {min_child_weight}\n"
@@ -166,18 +166,18 @@ def otimizar():
 
     file.close()
 
-    input("\nPressione enter para continuar")
+    input("\nPress enter to continue")
     menu()
 
 
-def padronizar(data):
+def standardize(data):
 
-    file = open(raiz_projeto + "/colunas.txt", "r")
-    colunas = file.read().splitlines()
+    file = open(root_folder + "/columns.txt", "r")
+    columns = file.read().splitlines()
     file.close()
 
     for i in data.columns:
-        if i not in colunas:
+        if i not in columns:
             data.drop([i], axis='columns', inplace=True)
         else:
             data[i].fillna(0, inplace=True)
@@ -185,32 +185,30 @@ def padronizar(data):
     return data
 
 
-def classificar(modelo):
-    tempoTotal = time.time()
+def classify(model):
+    totalTime = time.time()
+    data = loadFile()
 
-    data = carregar()
+    print("\nClassification process started...")
+    data = standardize(data)
 
-    print("\nProcesso de classificação iniciado")
-    data = padronizar(data)
+    data[label] = model.predict(data)
+    data.to_csv(root_folder + '/Dataset/classification_result.csv', index=False)
 
-    data[rotulo] = modelo.predict(data)
-    data.to_csv(raiz_projeto + '/Dataset/resultado_classificacao.csv', index=False)
-
-    print('\nArquivo resultado_classificacao.csv exportado para a pasta Dataset')
-    print(f"Tempo total para a classificação: {time.time() - tempoTotal:.3f} segundos")
+    print('\nFile classification_result.csv saved sucessffully to Dataset folder')
+    print(f"Classification total time: {time.time() - totalTime:.3f} seconds")
 
 
-def treinar():
-    tempoTotal = time.time()
+def training():
+    totalTime = time.time()
+    data = loadFile()
 
-    data = carregar()
+    trueTransactions = data[label].value_counts()[0]
+    print(trueTransactions)
+    fakeTransactions = data[label].value_counts()[1]
+    totalTransactions = data[label].count()
 
-    verdadeiro = data[rotulo].value_counts()[0]
-    fraude = data[rotulo].value_counts()[1]
-    total = data[rotulo].count()
-
-    print(
-        f'\nAlgumas informações sobre o seu dataset:\n\nTransações totais: {total}\nTransações verdadeiras: {verdadeiro}\nTransações fraudulentas: {fraude}\nPorcentagem de fraudes: {(fraude / total) * 100:.3f}%')
+    print(f'\nSome infos about your dataset:\n\nTotal transactions: {totalTransactions}\nTrue transactions: {trueTransactions}\nFalse transactions: {fakeTransactions}\nPercentage of false transactions: {(fakeTransactions / totalTransactions) * 100:.3f}%')
 
     bbc = BalancedBaggingClassifier(base_estimator=XGBClassifier(
         eta=eta,
@@ -226,100 +224,96 @@ def treinar():
         sampling_strategy='all',
         n_jobs=-1)
 
-    X_train, X_test, y_train, y_test = train_test_split(data.drop([rotulo], axis='columns'),
-                                                        data[rotulo], test_size=split, stratify=data[rotulo])
+    X_train, X_test, y_train, y_test = train_test_split(data.drop([label], axis='columns'),
+                                                        data[label], test_size=split, stratify=data[label])
 
     bbc.fit(X_train, y_train)
-    joblib.dump(bbc, raiz_projeto + '/modelo.pkl')
-    print('\nModelo gerado e exportado para a pasta raiz da aplicação')
+    joblib.dump(bbc, root_folder + '/model.pkl')
+    print('\nModel created and saved successfully on the root folder')
 
     y_pred = bbc.predict(X_test)
 
-    print("\nSeus valores de treinamento:")
-    print("Mathews: ", matthews_corrcoef(y_test, y_pred))
+    print("\nYour training values:")
     print("Recall: ", recall_score(y_test, y_pred))
 
     plot_confusion_matrix(bbc, X_test, y_test, values_format='d',
-                          display_labels=['verdadeiras', 'fraudulentas'])
+                          display_labels=['True transactions', 'False transactions'])
 
-    print(f"\nTempo total: {time.time() - tempoTotal:.3f} segundos")
+    print(f"\nTotal time: {time.time() - totalTime:.3f} seconds")
 
     plt.show()
-    input("\nPressione enter para continuar")
+    input("\nPress enter to continue")
     menu()
 
 
-def preProcessamento():
+def preProcessing():
+    data = loadFile()
+    print("\nPreprocessing started...")
 
-    data = carregar()
-    print("\nPré processamento dos dados iniciado")
+    totalTime = time.time()
+    correlatedColumns = set()
+    correlatedMatrix = data.corr()
 
-    tempoTotal = time.time()
-    correlacionadas = set()
-    matriz_corr = data.corr()
-
-    for i in range(len(matriz_corr.columns)):
+    for i in range(len(correlatedMatrix.columns)):
         for j in range(i):
-            if abs(matriz_corr.iloc[i, j]) > tx_correlacao:
-                colname = matriz_corr.columns[i]
+            if abs(correlatedMatrix.iloc[i, j]) > correlationRate:
+                colname = correlatedMatrix.columns[i]
                 if colname not in to_keep:
-                    correlacionadas.add(colname)
+                    correlatedColumns.add(colname)
 
-    dados_sem_correlacoes = data.drop(correlacionadas, axis=1)
-    data = dados_sem_correlacoes
+    data.drop(correlatedColumns, axis=1, inplace=True)
 
-    print("\nColunas correlacionadas removidas")
-    nao_numerico = set()
+    print("\nCorrelated columns removed")
+    nanValues = set()
 
     for y in data.columns:
         if data[y].dtype == object:
-            nao_numerico.add(y)
+            nanValues.add(y)
 
-    dados_sem_str = data.drop(nao_numerico, axis=1)
-    data = dados_sem_str
+    data.drop(nanValues, axis=1, inplace=True)
 
-    print("Colunas não numéricas removidas")
+    print("Non numeric columns removed")
 
     for i in data.columns:
         data[i].fillna(0, inplace=True)
 
-    print("Valores not a number preenchidos")
+    print("Not a number values filled")
 
-    with open("colunas.txt", "w+") as colunas:
+    with open("columns.txt", "w+") as columns:
         for i in data.columns:
-            if i != rotulo:
-                colunas.write(i)
-                colunas.write("\n")
+            if i != label:
+                columns.write(i)
+                columns.write("\n")
 
-    data.to_csv(raiz_projeto + '/Dataset/pre_processamento_concluido.csv', index=False)
-    print("\nPré processamento concluído")
-    print("Arquivo pre_processamento_concluido.csv exportado para a pasta Dataset")
-    print(f"\nTempo total: {time.time() - tempoTotal:.3f} segundos")
+    data.to_csv(root_folder + '/Dataset/preprocessing_done.csv', index=False)
+    print("\nPreprocessing finished")
+    print("File preprocessing_done.csv created and saved successfully on the Dataset folder")
+    print(f"\nTotal time: {time.time() - totalTime:.3f} seconds")
 
-    input("\nPressione enter para continuar")
+    input("\nPress enter to continue")
     menu()
 
 
 def menu():
-    opcoes, op = [1, 2, 3, 4, 5, 6, 7], 0
+    options, op = [1, 2, 3, 4, 5, 6, 7], 0
 
-    while op not in opcoes:
-        op = int(input("\nSelecione uma opção:\n\n"
-                       "1 - Aplicar o pré processamento ao dataset (Escolha esta opção se for a primeira vez que utiliza o mesmo)\n"
-                       "2 - Treinar o modelo utilizando a configuração padrão\n"
-                       "3 - Treinar o modelo Utilizando a configuração otimizada\n"
-                       "4 - Testar combinações de parâmetros e valores e gerar configuração otimizada\n"
-                       "5 - Classificar transações usando o modelo treinado\n"
-                       "6 - Ajuda\n"
-                       "7 - Sobre esta aplicação\n\n"
-                       "Resposta: "))
+    while op not in options:
+        op = int(input("\nSelect an option below:\n\n" 
+                       "1 - Apply preprocessing to the dataset (Choose this option if this is your first time using it)\n"
+                       "2 - Train the model using the default configuration\n"
+                       "3 - Train the model Using the optimized configuration\n"
+                       "4 - Test combinations of parameters and values to generate an optimized configuration\n"
+                       "5 - Classify transactions using the previously trained model\n"
+                       "6 - Help\n"
+                       "7 - About\n\n"
+                       "Answer: "))
 
     if op == 1:
-        preProcessamento()
+        preProcessing()
 
     elif op == 2:
         try:
-            file = open(raiz_projeto + "/config.txt", "r")
+            file = open(root_folder + "/config.txt", "r")
             config = file.readlines()
 
             eta = float(config[3].split(" #")[0])
@@ -333,7 +327,7 @@ def menu():
 
             file.close()
 
-            print(f"\nValores do arquivo de configuração padrão carregados com sucesso:\n\n"
+            print(f"\nSuccessfully loaded default values:\n\n"
                   f"Eta: {eta}\n"
                   f"n_estimators: {n_estimators}\n"
                   f"min_child_weight: {min_child_weight}\n"
@@ -344,26 +338,26 @@ def menu():
                   f"taxa de split: {split}")
 
         except:
-            print("\nArquivo de configuração padrão não encontrado.\nVerifique a pasta raiz")
+            print("\nDefault configuration file not found.\nPlease check the root folder")
 
-        treinar()
+        training()
 
     elif op == 3:
         try:
-            otimizado = open(raiz_projeto + "/otimizado.txt", "r")
-            configPersonalizada = otimizado.readlines()
-            print("\nArquivo de configuração otimizado carregado com sucesso")
+            optimized = open(root_folder + "/optimized.txt", "r")
+            optimizedConfig = optimized.readlines()
+            print("\nOptimized file sucessfully loaded")
 
-            eta = float(configPersonalizada[0].split(" #")[0])
-            n_estimators = int(configPersonalizada[1].split(" #")[0])
-            min_child_weight = int(configPersonalizada[2].split(" #")[0])
-            subsample = float(configPersonalizada[3].split(" #")[0])
-            colsample_bytree = float(configPersonalizada[4].split(" #")[0])
-            scale_pos_weight = int(configPersonalizada[5].split(" #")[0])
-            max_depth = int(configPersonalizada[6].split(" #")[0])
-            split = float(configPersonalizada[7].split(" #")[0])
+            eta = float(optimizedConfig[0].split(" #")[0])
+            n_estimators = int(optimizedConfig[1].split(" #")[0])
+            min_child_weight = int(optimizedConfig[2].split(" #")[0])
+            subsample = float(optimizedConfig[3].split(" #")[0])
+            colsample_bytree = float(optimizedConfig[4].split(" #")[0])
+            scale_pos_weight = int(optimizedConfig[5].split(" #")[0])
+            max_depth = int(optimizedConfig[6].split(" #")[0])
+            split = float(optimizedConfig[7].split(" #")[0])
 
-            print(f"Valores do arquivo de configuração otimizado:\n\n"
+            print(f"Values:\n\n"
                   f"Eta: {eta}\n"
                   f"n_estimators: {n_estimators}\n"
                   f"min_child_weight: {min_child_weight}\n"
@@ -373,93 +367,94 @@ def menu():
                   f"max_depth: {max_depth}\n"
                   f"taxa de split: {split}")
 
-            otimizado.close()
-            treinar()
+            optimized.close()
+            training()
 
         except:
-            print("\nArquivo de configuração otimizada não encontrado.\n"
-                  "Efetue a otimização através do menu")
-            input("\nPressione enter para continuar")
+            print("\nOptimized config file not found.\n"
+                  "Run the optimization process through the menu first")
+            input("\nPress enter to continue")
             menu()
 
     elif op == 4:
-        otimizar()
+        optimize()
 
     elif op == 5:
         try:
-            modelo = joblib.load("modelo.pkl")
-            print("\nmodelo carregado com sucesso")
+            model = joblib.load("model.pkl")
+            print("\nModel successfully loaded")
 
-            classificar(modelo)
+            classify(model)
 
         except:
-            print("\nModelo ainda não treinado.\n"
-                  "Treine o modelo a partir do menu primeiramente")
-            input("\nPressione enter para continuar")
+            print("\nModel is not trained yet.\n"
+                  "Run the training process through the menu first")
+            input("\nPress enter to continue")
             menu()
 
     elif op == 6:
 
-        print('\nEsta ferramenta utiliza o algoritmo Extreme Gradient Boosting (XGB) em sua construção.\n'
-               'Por ser um algoritmo de boosting, o XGB implementa diversos algoritmos mais simples com o intuito de chegar a um\n'
-               'resultado mais completo e acurado no final.\n\n'
-               'Na prática os algoritmos deste tipo funcionam como árvores de decisão sequenciais já que o valor que foi\n'
-               'predito em n irá ser levado em conta para a predição em n+1 onde o algoritmo irá utilizar novas colunas e valores aleatórios\n'
-               'para aprender a lidar com as particularidades das classificações ERRADAS da rodada anterior.\n\n'
-               'Também foi utilizado neste trabalho a biblioteca Balanced Bagging Classification, para lidar com dados desbalanceados e\n'
-               'e o Grid Search CV para fazer o cruzamento dos parâmetros e valores na opção 4 do menu, quando da busca dos valores otimizados\n'
-               'Um dos pontos altos do XGB é justamente o fato dele possuir dezenas de parâmetros configuráveis. \n'
-               'Estes são os principais parãmetros utilizados por esta ferramenta:\n\n'
-               'Eta: Representa a taxa de aprendizagem, chamada de eta na documentação oficial do XGB.\n'
-               'N_estimators: Refere-se ao número de árvores de decisão que serão criadas pelo modelo durante o treinamento.\n'
-               'Min_child_weight: Define a soma mínima dos pesos necessária para a árvore seguir sendo particionada.\n'
-               'Quanto mais alto este valor, mais conservador será o algoritmo e menos relações superespecíficas serão aprendidas.\n'
-               'Max_depth: Representa a profundidade máxima da árvore. Assim como o parâmetro anterior, possui a mesma relação de controle com overfitting. '
-               'Porém, neste caso, quanto mais alto mais tendência ao overfitting.\n'
-               'Subsample: Determina a fração de dados de treinamento aleatória que será repassada a cada árvore antes delas aumentarem mais 1 nível.\n'
-               'Colsample_bytree: Similar ao anterior, determina a fração de colunas que serão fornecidas aleatoriamente no momento de criação das árvores.\n'
-               'Scale_pos_weight: Controla o balanço entre pesos positivos e negativos. É recomendado para casos com grande desbalanceamento entre classes.\n\n'
-               '****************************************************\n'
-               '                     IMPORTANTE\n\n'
-              'Preencha o arquivo de configurações na pasta raiz da aplicação\n'
-              'para o correto funcionamento da aplicação\n\n'
-              'Para mais informações:\n'
-              'Contato -> MaximilianoMeyer48@gmail.com\n'
-              'Para atualizações, clonar ou contribuir com o projeto -> https://github.com/Evilmaax\n\n'               
-              '****************************************************\n')
+        print('\nThis tool uses the Extreme Gradient Boosting (XGB) algorithm in its construction.\n'
+               'As a boosting algorithm, XGB implements several simpler algorithms in order to achieve a \n'
+               'more complete and accurate result at the end.\n\n'
+               'In practice, algorithms of this type work as sequential decision trees since the value that was\n'
+               'predicted at n will be taken into account for the prediction at n+1 where the algorithm will use new random columns and values\n'
+               'to learn to deal with the peculiarities of the WRONG classification from the previous round.\n\n'
+               'Balanced Bagging Classification library was also used in this work, to deal with unbalanced data\n'
+               'and Grid Search CV to make the cross-validation of parameters and values to generate the optimized values\n'
+               'One of the highlights of the XGB is precisely the fact that it has dozens of configurable parameters. \n'
+               'These are the main ones used by this tool:\n\n'
+               'Eta: Represents the learning rate, called eta in the official XGB documentation.\n'
+               'N_estimators: Refers to the number of decision trees that will be created by the model during training.\n'
+               'Min_child_weight: Defines the minimum sum of weights necessary for the tree to continue to be partitioned.\n'
+               'The higher this value, the more conservative the algorithm will be and the less superspecific relationships will be learned.\n'
+               'Max_depth: Represents the maximum depth of the tree. Like the previous parameter, it has the same control relationship with overfitting.\n'
+               'However, in this case, the higher the more likely it is to overfit.\n'
+               'Subsample: Determines the portion of random training data that will be passed to each tree before they increase by another level.\n'
+               'Colsample_bytree: Similar to the above, determines the portion of columns that will be given randomly when the trees are created.\n'
+               'Scale_pos_weight: Controls the balance between positive and negative weights. \n'
+              'It is recommended for cases with a great imbalance between classes.\n\n'
+               '**************************************************** ***\n'
+               '                        IMPORTANT\n\n'
+              'Fill in the configuration files in the applications root folder before the first use\n'
+              'for the correct functioning of the application\n\n'
+              'For more information:\n'
+              'Contact -> MaximilianoMeyer48@gmail.com\n'
+              'For updates, clone or contribute to the project -> https://github.com/Evilmaax\n\n'
+              '**************************************************** ***\n')
 
-        x = input('Pressione enter para voltar ao menu')
+        x = input('Pressione enter to return to menu')
         menu()
 
 
     elif op == 7:
-        x = input('\nEsta aplicação foi desenvolvida por Maximiliano Meyer durante o trabalho de conclusão\n'
-                  'intitulado "Desenvolvimento de uma ferramenta de identificação\n'
-                  'de fraudes em trnasações com cartões de crédito com uso de Machine Learning"\n'
-                  'desenvolvido no curso de Ciências da Computação da Universidade de Santa Cruz do Sul - Unisc\n'
-                  'Pesquisa e projeto desenvolvidos e defendidos no primeiro semestre de 2021.\n\n'
-                  'Seu uso é livre desde que informada a fonte.\n'
-                  'Para atualizações, clonar ou contribuir com o projeto -> https://github.com/Evilmaax\n'
-                  'Contato -> MaximilianoMeyer48@gmail.com\n\n'
-                  'Versão 0.1\n\n'
-                  'Pressione enter para voltar ao menu')
+        x = input('\nThis application was developed by Maximiliano Meyer during his final work\n'
+                   'titled "Development of a classifying tool to detect false transactions in \n'
+                   'credit card operations in real-time using Machine Learning "\n'
+                   'developed in the Computer Science course at the University of Santa Cruz do Sul - Unisc\n'
+                   'Research and project developed in the first half of 2021.\n\n'
+                   'Its use is free as long as the source is informed.\n'
+                   'For updates, clone or contribute to the project -> https://github.com/Evilmaax\n'
+                   'Contact -> MaximilianoMeyer48@gmail.com\n\n'
+                   'Version 0.1\n\n'
+                   'Press enter to return to menu')
 
         menu()
 
 
 try:
-    modelo = joblib.load("modelo.pkl")
+    model = joblib.load("model.pkl")
     op = 0
 
     while op != 1 and op != 2:
-        op = int(input("\nVocê já possui um modelo treinado e pronto para uso.\n"
-                       "Gostaria de:\n\n"
-                       "1 - Classificar transações usando o modelo treinado anteriormente\n"
-                       "2 - Preparar os arquivos e configurações de teste\n\n"
-                       "Resposta: "))
+        op = int(input("\nYou have a trained model ready to be used.\n"
+                       "Do you like to:\n\n"
+                       "1 - Classify transactions now\n"
+                       "2 - Build model or prepare files and configuration\n\n"
+                       "Answer: "))
 
     if op == 1:
-        classificar(modelo)
+        classify(model)
 
     elif op == 2:
         menu()
