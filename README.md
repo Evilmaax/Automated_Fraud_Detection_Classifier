@@ -10,9 +10,13 @@ This research and project were developed in the first half of 2021 as a conclusi
 ## Key Topics
 The following topics will be covered here:
 * Extreme Gradient Boosting
-  * Some paramenters used in this tool
+  * Some parameters used in this tool
 * Grid Search CV
 * Balanced Bagging Classifier
+* Recall value
+* Dataset
+* Tests
+* Next steps
 
 ### Extreme Gradient Boosting algorithm
 
@@ -40,7 +44,7 @@ These are the main ones used by this tool:
 
 Grid Search CV is a module of the Scikit Learn library used to automate the parameter optimization process that XGB makes necessary. In addition to creating as many simulations as necessary through a data crossing, the tool is also capable of evaluating the performance of each of these arrangements using a metric defined by the user.
 
-To use it, we just need to define which parameters will be tested, which will be the possible values for each scenario and the number of Cross Validations (CV) to be performed. The CV value represents the number of divisions in which the dataset will be partitioned. The technique consists of generating <i>n<\i> cuts of the same size in order to achieve a greater variety of training and testing scenarios in a simulation. 
+To use it, we just need to define which parameters will be tested, which will be the possible values for each scenario and the number of Cross Validations (CV) to be performed. The CV value represents the number of divisions in which the dataset will be partitioned. The technique consists of generating <i>n</i> cuts of the same size in order to achieve a greater variety of training and testing scenarios in a simulation. 
  
 For example: If we use a dataset with 70 thousand records and define CV value being 7, then this dataset will be divided into 7 parts of 10000 records each. Subsequently, these 7 datasets will undergo training and validation, alternating which part is being used as test and training until all combinations are performed, as shown below.
 
@@ -48,13 +52,25 @@ For example: If we use a dataset with 70 thousand records and define CV value be
 
 [gif source](https://stackoverflow.com/questions/31947183/how-to-implement-walk-forward-testing-in-sklearn)
  
-http://github.com - automatic!
-[GitHub](http://github.com)
- 
 ## Balanced Bagging Classifier
 
 Part of the <i>Imbalanced Learn</i> library (a branch of Scikit Learn) this tool aims to diminish the damage of highly unbalanced classes. Using it, it is possible to create records for classes with undersampling, remove records in classes with oversampling and perform resampling, a technique in which the small amount of data available from an unbalanced class is used to estimate a population parameter.
 
+## Recall value
+
+To mesure how correct it is the classifciation recall metric is used. With it we know the percentage of values belonging to a given class that were identified among all the possibilities of the dataset. Recall is, usually, used when it seeks to reduce false negatives.
+
+## Dataset
+
+For training and results validation was used a public dataset, with real data collected from the digital payment platform Vesta, which was made [available in Kaggle] (https://www.kaggle.com/c/ieee-fraud-detection/data). The dataset contains more than 590,000 credit card purchase and sale records labeled as fraudulent or non-fraudulent. The file is composed of 394 columns.
+
+## Tests
+
+To run this tool, any IDE that supports projects developed in Python language or even the Windows command terminal can be used. Regardless of the option chosen, it is necessary to have Python installed on the machine. The application was not yet designed for use on operating systems based on Linux, Mac OS or any others.
+
+In the tests presented in this chapter, a machine equipped with a 4-core Intel Core i7-4720HQ processor and support for up to 8 threads, Nvidia GeForce GTX 960M graphics card with 2 GB of dedicated memory, 8 GB of RAM memory and SSD installed was used. The operating system is Windows 10 and the development environment is Pycharm.
+In this process, the same dataset manipulated throughout the research was used, which, for this hypothetical scenario, was divided into 2 files: training.CSV, containing about 550 thousand transactions and classificacao.CSV, with approximately 40 thousand unpublished transactions to the model in order to generate a totally exempt rating. It is noteworthy that the cuts maintained similar false transaction rates, with 3.51% and 3.43%, respectively.
+Initially, both files have the same column structure, as if they had been extracted from the institution's database through the same ETL process, as it is imagined to occur in the daily lives of these corporations.
 
 
 *******************************************************
