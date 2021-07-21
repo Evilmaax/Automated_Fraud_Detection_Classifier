@@ -67,9 +67,7 @@ To measure how correct it is the classification recall metric is used. With it, 
 
 ### Dataset
 
-For training and results validation was used a public dataset, with real data collected from the digital payment platform Vesta, which was made 
-
-[available in Kaggle] (https://www.kaggle.com/c/ieee-fraud-detection/data).
+For training and results validation was used a public dataset, with real data collected from the digital payment platform Vesta, which was made [available in Kaggle](https://www.kaggle.com/c/ieee-fraud-detection/data).
 
 The dataset contains more than 590,000 credit card purchase and sale records labeled as fraudulent or non-fraudulent. The file is composed of 394 columns.
 
