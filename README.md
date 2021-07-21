@@ -90,6 +90,10 @@ The second file created upon completion of the preprocessing step is columns.TXT
 
 4 - The last step is classify the unseen records with the generated model. The result will be saved as .CSV to the Dataset folder.
 
+In this test the tool achieved a recall of 0.87.
+
+
+![Test results](https://ibb.co/HgV73NW)
 
 *******************************************************
                         IMPORTANT
