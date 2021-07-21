@@ -7,9 +7,17 @@ in real-time using Machine Learning developed in the Computer Science course at 
 
 This research and project were developed in the first half of 2021 as a conclusion work of Computer Science course at the University of Santa Cruz do Sul - Unisc.
 
+## Major acomplishments
+
+* Works with any fraudulent credit cards transactions dataset;
+* Data persistency, since the created model is a local file. After the training process user can load the model on every classification, distribute it, etc;
+* Automated search for the best set of parameters and values for each dataset;
+* Easy to configure and use
+
 Below you can see the tool in action in a video, audio in portuguese only.
 
 [![Video](https://img.youtube.com/vi/fnnyos9uOos/0.jpg)](https://www.youtube.com/watch?v=fnnyos9uOos)
+
 
 ## Key Topics
 
