@@ -3,7 +3,8 @@
 ## Overview
 
 This application was developed by Maximiliano Meyer during his final work titled "Development of a classifying tool to detect false transactions in credit card operations 
-in real-time using Machine Learning developed in the Computer Science course at the University of Santa Cruz do Sul - Unisc.<br>
+in real-time using Machine Learning developed in the Computer Science course at the University of Santa Cruz do Sul - Unisc.
+
 This research and project were developed in the first half of 2021 as a conclusion work of Computer Science course at the University of Santa Cruz do Sul - Unisc.<br>
 
 ## Key Topics
@@ -27,14 +28,13 @@ This way with a new set of random columns and values XGB tends to learn how to d
 One of the highlights of the XGB is precisely the fact that it has dozens of configurable parameters.<br>
 These are the main ones used by this tool:
 
-Eta: Represents the learning rate, called eta in the official XGB documentation.<br>
-N_estimators: Refers to the number of decision trees that will be created by the model during training.<br>
-Min_child_weight: Defines the minimum sum of weights necessary for the tree to continue to be partitioned. The higher this value, the more conservative the algorithm will be and the less superspecific relationships will be learned.<br>
-Max_depth: Represents the maximum depth of the tree. Like the previous parameter, it has the same control relationship with overfitting. However, in this case, the higher the more likely it is to overfit.<br>
-Subsample: Determines the portion of random training data that will be passed to each tree before they increase by another level.\n'
-Colsample_bytree: Similar to the above, determines the portion of columns that will be given randomly when the trees are created.\n'
-Scale_pos_weight: Controls the balance between positive and negative weights. It is recommended for cases with a great imbalance between classes.
-
+<i>Eta</i>: Represents the learning rate, called eta in the official XGB documentation.<br>
+<i>N_estimators</i>: Refers to the number of decision trees that will be created by the model during training.<br>
+<i>Min_child_weight</i>: Defines the minimum sum of weights necessary for the tree to continue to be partitioned. The higher this value, the more conservative the algorithm will be and the less superspecific relationships will be learned.<br>
+<i>Max_depth</i>: Represents the maximum depth of the tree. Like the previous parameter, it has the same control relationship with overfitting. However, in this case, the higher the more likely it is to overfit.<br>
+<i>Subsample</i>: Determines the portion of random training data that will be passed to each tree before they increase by another level.\n'
+<i>Colsample_bytree</i>: Similar to the above, determines the portion of columns that will be given randomly when the trees are created.\n'
+<i>Scale_pos_weight</i>: Controls the balance between positive and negative weights. It is recommended for cases with a great imbalance between classes.
 
 ## Extreme Gradient Boosting algorithm
 
