@@ -5,9 +5,14 @@
 This application was developed by Maximiliano Meyer during his final work titled "Development of a classifying tool to detect false transactions in credit card operations 
 in real-time using Machine Learning developed in the Computer Science course at the University of Santa Cruz do Sul - Unisc.
 
-This research and project were developed in the first half of 2021 as a conclusion work of Computer Science course at the University of Santa Cruz do Sul - Unisc.<br>
+This research and project were developed in the first half of 2021 as a conclusion work of Computer Science course at the University of Santa Cruz do Sul - Unisc.
+
+Below you can see the tool in action, audio in portuguese only.
+
+[![Video](https://img.youtube.com/vi/fnnyos9uOos/0.jpg)](https://www.youtube.com/watch?v=fnnyos9uOos)
 
 ## Key Topics
+
 The following topics will be covered here:
 * Extreme Gradient Boosting
   * Some parameters used in this tool
@@ -27,7 +32,7 @@ In practice, algorithms of this type work as sequential decision trees since the
 
 This way with a new set of random columns and values XGB tends to learn how to deal with the peculiarities of the WRONG classification from the previous round.
 
-### Some paramenters used in this tool
+### Some parameters used in this tool
 
 One of the highlights of the XGB is precisely the fact that it has dozens of configurable parameters.<br>
 These are the main ones used by this tool:
@@ -37,7 +42,7 @@ These are the main ones used by this tool:
 * <i>Min_child_weight</i>: Defines the minimum sum of weights necessary for the tree to continue to be partitioned. The higher this value, the more conservative the algorithm will be and the less superspecific relationships will be learned.<br>
 * <i>Max_depth</i>: Represents the maximum depth of the tree. Like the previous parameter, it has the same control relationship with overfitting. However, in this case, the higher the more likely it is to overfit.<br>
 * <i>Subsample</i>: Determines the portion of random training data that will be passed to each tree before they increase by another level.'
-* <i>Colsample_bytree</i>: Similar to the above, determines the portion of columns that will be given randomly when the trees are created.'
+* <i>Colsample_bytree</i>: Similar to the above, determine the portion of columns that will be given randomly when the trees are created.'
 * <i>Scale_pos_weight</i>: Controls the balance between positive and negative weights. It is recommended for cases with a great imbalance between classes.
 
 ### Grid Search CV
@@ -58,7 +63,7 @@ Part of the <i>Imbalanced Learn</i> library (a branch of Scikit Learn) this tool
 
 ### Recall value
 
-To mesure how correct it is the classifciation recall metric is used. With it we know the percentage of values belonging to a given class that were identified among all the possibilities of the dataset. Recall is, usually, used when it seeks to reduce false negatives.
+To measure how correct it is the classification recall metric is used. With it, we know the percentage of values belonging to a given class that were identified among all the possibilities of the dataset. The recall metric is, usually, used when it seeks to reduce false negatives.
 
 ### Dataset
 
@@ -70,17 +75,17 @@ The dataset contains more than 590,000 credit card purchase and sale records lab
 
 ### Usage and tests
 
-To run this tool, any IDE that supports projects developed in Python language or even the Windows command terminal can be used. Regardless of the option chosen, it is necessary to have Python installed on the machine. The application was not yet designed for use on operating systems based on Linux, Mac OS or any others.
+To run this tool, any IDE that supports projects developed in Python language or even the Windows command terminal can be used. Regardless of the option chosen, it is necessary to have Python installed on the machine. The application was not yet designed for use on operating systems based on Linux, Mac OS, or any others.
 
-In the tests presented here, a machine equipped with a 4-core Intel Core i7-4720HQ processor and support for up to 8 threads, Nvidia GeForce GTX 960M graphics card with 2 GB of dedicated memory, 8 GB of RAM memory and SSD installed was used. The operating system is Windows 10 and the development environment is Pycharm.
+In the tests presented here, a machine equipped with a 4-core Intel Core i7-4720HQ processor and support for up to 8 threads, Nvidia GeForce GTX 960M graphics card with 2 GB of dedicated memory, 8 GB of RAM, and SSD installed was used. The operating system is Windows 10 and the development environment is Pycharm.
 
-In this process, the mentioned dataset before was used. In this stage, dataset was divided into 2 files: training.CSV, containing about 550 thousand transactions and classification.CSV, with approximately 40 thousand transactions unseen to the model in order to generate a totally exempt rating. It is noteworthy that the cuts maintained similar false transaction rates, with 3.51% and 3.43%, respectively.
+In this process, the mentioned dataset before was used. In this stage, the dataset was divided into 2 files: training.CSV, containing about 550 thousand transactions, and classification.CSV, with approximately 40 thousand transactions unseen to the model to generate a totally exempt rating. It is noteworthy that the cuts maintained similar false transaction rates, with 3.51% and 3.43%, respectively.
 
-The folowwing steps were performed (for a more detailed explanation, please refer to the file "xxxxxxx" in above - in portuguese):
+The following steps were performed (for a more detailed explanation, please refer to the file "xxxxxxx" in above - in portuguese):
 
 1 - The initial action to be taken is setting up the environment for the initial run. For this, the user must edit the config.txt file, adding the label of the fraud column and the columns to be ignored in the correlation analysis stage. Should be added the training .CSV file in the Dataset folder. After performing these steps it is now possible to start the program
 
-2 - The first step to be taken when working with a new dataset is to apply preprocessing to the data via option 1 on the menu. The program then asks, standard task, which file will be used in the chosen step. As there is only 1 file in the folder, just inform the number that identifies it and the process starts running.
+2 - The first step to be taken when working with a new dataset is to apply preprocessing to the data via option 1 on the menu. The program then asks, this is a standard task, which file will be used in the chosen step. As there is only 1 file in the folder, just inform the number that identifies it and the process starts running.
 
 Two files will be exported at the end of the execution of this pipeline. The first one, called pre_processing_done.csv is the result of the input dataset after going through the initial data processing and having the correlated and non-numeric columns removed and the NaN values <i>NaN</i> filled. This file will be exported to the Dataset folder and will be used in all future training and optimization steps.
 
@@ -90,14 +95,14 @@ The second file created upon completion of the preprocessing step is columns.TXT
 
 4 - The last step is to classify the unseen records with the generated model. The result will be saved as .CSV to the Dataset folder.
 
-In this test the tool achieved a recall of 0.87.
+In this test, the tool achieved a recall of 0.87.
 
 
 ![Test results](https://i.ibb.co/0JcqvBg/fdvdv.jpg)
 
 ### Next steps
 
-If you want to contribute to this project, your efferts are very welcome. This is a list of some open points:
+If you want to contribute to this project, your efforts are very welcome. This is a list of some open points:
 
 * Diminish processing time for some steps, like Grid Search optimization. The way to do this could be distributed computing, for example, or any other else;
 * Portability to Mac and Linux family OSs;
@@ -107,9 +112,7 @@ If you want to contribute to this project, your efferts are very welcome. This i
 
 *******************************************************
 
-
-Its use is free as long as the source is informed.
-
+The use of this tool is free as long as the source is informed.
 
 For updates, clone or contribute to the project -> https://github.com/Evilmaax<br>
 Contact -> MaximilianoMeyer48@gmail.com<br>
