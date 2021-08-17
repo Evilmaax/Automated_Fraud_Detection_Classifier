@@ -91,13 +91,13 @@ The following steps were performed (for a more detailed explanation, please refe
 
 1 - The initial action to be taken is setting up the environment for the initial run. For this, the user must edit the config.txt file, adding the label of the fraud column and the columns to be ignored in the correlation analysis stage. Should be added the training .CSV file in the Dataset folder. After performing these steps it is now possible to start the program
 
-2 - The first step to be taken when working with a new dataset is to apply preprocessing to the data via option 1 on the menu. The program then asks, this is a standard task, which file will be used in the chosen step. As there is only 1 file in the folder, just inform the number that identifies it and the process starts running.
+2 - The first step to be taken when working with a new dataset is to apply the data wrangling actions to the data via option 1 on the menu. The program then asks, this is a standard task, which file will be used in the chosen step. As there is only 1 file in the folder, just inform the number that identifies it and the process starts running.
 
 Two files will be exported at the end of the execution of this pipeline. The first one, called pre_processing_done.csv is the result of the input dataset after going through the initial data processing and having the correlated and non-numeric columns removed and the NaN values <i>NaN</i> filled. This file will be exported to the Dataset folder and will be used in all future training and optimization steps.
 
-The second file created upon completion of the preprocessing step is columns.TXT, which will be used during the sorting process to ensure that the transactions to be sorted will have the same column settings as the template created. Without this standardization, it is impossible to use the model and the data to be classified together.
+The second file created upon completion of the data wrangling step is columns.TXT, which will be used during the sorting process to ensure that the transactions to be sorted will have the same column settings as the template created. Without this standardization, it is impossible to use the model and the data to be classified together.
 
-3 - With the preprocessing done the training can be made. The user has the option to train using the default values or use another menus option to automatically search for the optimized values.
+3 - With the data wrangling done the training can be made. The user has the option to train using the default values or use another menus option to automatically search for the optimized values.
 
 4 - The last step is to classify the unseen records with the generated model. The result will be saved as .CSV to the Dataset folder.
 
